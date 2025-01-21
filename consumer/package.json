@@ -1,0 +1,14 @@
+{
+    "name": "consumer",
+    "version": "1.0.0",
+    "description": "Consumer service for contract testing demo",
+    "type": "module",
+    "main": "src/client.js",
+    "scripts": {
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    },
+    "devDependencies": {
+        "@pact-foundation/pact": "^11.0.2",
+        "jest": "^29.5.0"
+    }
+}
