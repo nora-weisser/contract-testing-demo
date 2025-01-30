@@ -2,8 +2,6 @@ const path = require('path');
 const { PactV3, MatchersV3 } = require('@pact-foundation/pact');
 const LibraryClient = require('../src/client');
 
-const { like, eachLike } = MatchersV3
-
 
 const provider = new PactV3({
     dir: path.resolve(process.cwd(), 'pacts'),
