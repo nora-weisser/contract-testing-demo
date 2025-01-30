@@ -72,64 +72,6 @@
         },
         "status": 200
       }
-    },
-    {
-      "description": "a request to add a new book",
-      "providerStates": [
-        {
-          "name": "Book creation is possible"
-        }
-      ],
-      "request": {
-        "body": {
-          "author": "F. Scott Fitzgerald",
-          "isbn": "9780743273565",
-          "title": "The Great Gatsby"
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "matchingRules": {
-          "body": {
-            "$": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            }
-          },
-          "header": {}
-        },
-        "method": "POST",
-        "path": "/books"
-      },
-      "response": {
-        "body": {
-          "author": "Harper Lee",
-          "id": 1,
-          "isbn": "9780446310789",
-          "title": "To Kill a Mockingbird"
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "matchingRules": {
-          "body": {
-            "$": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            }
-          },
-          "header": {}
-        },
-        "status": 201
-      }
     }
   ],
   "metadata": {
