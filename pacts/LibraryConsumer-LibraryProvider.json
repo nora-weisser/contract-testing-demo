@@ -1,0 +1,150 @@
+{
+  "consumer": {
+    "name": "LibraryConsumer"
+  },
+  "interactions": [
+    {
+      "description": "a request for all books",
+      "request": {
+        "method": "GET",
+        "path": "/books"
+      },
+      "response": {
+        "body": [
+          {
+            "author": "Harper Lee",
+            "id": 1,
+            "isbn": "9780446310789",
+            "title": "To Kill a Mockingbird"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request for book 1",
+      "providerStates": [
+        {
+          "name": "A book with ID 1 exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/books/1"
+      },
+      "response": {
+        "body": {
+          "author": "Harper Lee",
+          "id": 1,
+          "isbn": "9780446310789",
+          "title": "To Kill a Mockingbird"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to add a new book",
+      "providerStates": [
+        {
+          "name": "Book creation is possible"
+        }
+      ],
+      "request": {
+        "body": {
+          "author": "F. Scott Fitzgerald",
+          "isbn": "9780743273565",
+          "title": "The Great Gatsby"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {}
+        },
+        "method": "POST",
+        "path": "/books"
+      },
+      "response": {
+        "body": {
+          "author": "Harper Lee",
+          "id": 1,
+          "isbn": "9780446310789",
+          "title": "To Kill a Mockingbird"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {}
+        },
+        "status": 201
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "11.0.2"
+    },
+    "pactRust": {
+      "ffi": "0.4.0",
+      "models": "1.0.4"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "LibraryProvider"
+  }
+}

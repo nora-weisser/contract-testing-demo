@@ -1,4 +1,4 @@
-export class LibraryClient {
+class LibraryClient {
     constructor(baseUrl) {
         this.baseUrl = baseUrl
     }
@@ -33,3 +33,5 @@ export class LibraryClient {
         return await response.json()
     }
 }
+
+module.exports = LibraryClient;

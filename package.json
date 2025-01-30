@@ -6,7 +6,9 @@
     "main": "src/server.js",
     "scripts": {
         "start": "node src/server.js",
-        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+        "test:consumer": "jest consumer/test/consumer.test.js",
+        "test:provider": "jest provider/test/provider.spec.js"
     },
     "dependencies": {
         "express": "^4.18.2"
