@@ -14,17 +14,16 @@ const EXPECTED_BOOK = { id: 1, title: "To Kill a Mockingbird", author: "Harper L
 describe("getAllBooks", () => {
     test("returns all books", async () => {
 
-        provider.addInteraction({
-            uponReceiving: "a request for all books",
-            withRequest: {
+        provider
+            .uponReceiving("a request for all books")
+            .withRequest({
                 method: "GET",
                 path: "/books",
-            },
-            willRespondWith: {
+            })
+            .willRespondWith({
                 status: 200,
                 body: MatchersV3.eachLike(EXPECTED_BOOK),
-            },
-        })
+            })
 
         await provider.executeTest(async (mockService) => {
             const client = new LibraryClient(mockService.url)
@@ -37,18 +36,17 @@ describe("getAllBooks", () => {
 describe("getBook", () => {
     test("returns a book when a valid book id is provided", async () => {
 
-        provider.addInteraction({
-            states: [{ description: "A book with ID 1 exists" }],
-            uponReceiving: "a request for book 1",
-            withRequest: {
+        provider
+            .given('A book with ID 1 exists')
+            .uponReceiving("a request for book 1")
+            .withRequest({
                 method: "GET",
                 path: "/books/1",
-            },
-            willRespondWith: {
+            })
+            .willRespondWith({
                 status: 200,
                 body: MatchersV3.like(EXPECTED_BOOK),
-            },
-        })
+            }),
 
         await provider.executeTest(async mockProvider => {
             const libraryClient = new LibraryClient(mockProvider.url)
