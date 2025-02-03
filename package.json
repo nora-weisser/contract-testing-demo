@@ -9,7 +9,7 @@
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
         "test:consumer": "jest consumer/test/consumer.test.js",
         "test:provider": "jest provider/test/provider.spec.js", 
-        "publish:pact": "pact-broker publish ./pacts --consumer-app-version=1.0.3 --tag=main --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN"
+        "publish:pact": "pact-broker publish ./pacts --consumer-app-version=$GIHUB_SHA --tag=main --tag=main --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN"
     },
     "dependencies": {
         "express": "^4.18.2"
