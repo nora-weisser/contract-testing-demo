@@ -8,6 +8,9 @@ describe("Pact Verification", () => {
         const opts = {
             provider: "LibraryProvider",
             providerBaseUrl: "http://localhost:3000",
+            pactBrokerToken: process.env.PACT_BROKER_TOKEN,
+            providerVersion: process.env.GITHUB_SHA,
+            providerVersionBranch: process.env.GITHUB_BRANCH,
             publishVerificationResult: true,
             providerVersion: "1.0.0",
             stateHandlers: {
