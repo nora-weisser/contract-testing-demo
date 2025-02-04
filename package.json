@@ -8,9 +8,9 @@
         "start": "node src/server.js",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
         "test:consumer": "jest consumer/test/consumer.test.js",
-        "can:i:deploy:consumer": "pact-broker can-i-deploy --pacticipant LibraryConsumer --version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN" ,
+        "can:i:deploy:consumer": "pact-broker can-i-deploy --pacticipant LibraryConsumer --version=$GITHUB_SHA --to-environment production" ,
         "test:provider": "jest provider/test/provider.spec.js", 
-        "can:i:deploy:provider": "pact-broker can-i-deploy --pacticipant LibraryProvider --version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",
+        "can:i:deploy:provider": "pact-broker can-i-deploy --pacticipant LibraryProvider --version=$GITHUB_SHA --to-environment production",
         "publish:pact": "pact-broker publish ./pacts --consumer-app-version=$GITHUB_SHA --branch=$GITHUB_BRANCH --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN"
     },
     "dependencies": {
