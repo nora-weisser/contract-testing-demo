@@ -11,12 +11,7 @@ describe("Pact Verification", () => {
             pactBrokerToken: process.env.PACT_BROKER_TOKEN,
             providerVersion: process.env.GITHUB_SHA,
             providerVersionBranch: process.env.GITHUB_BRANCH,
-            consumerVersionSelectors: [
-                {mainBranch: true},
-                {matchingBranch: true},
-            ],
             publishVerificationResult: true,
-            providerVersion: "1.0.0",
             stateHandlers: {
                 "A book with ID 1 exists": () => {
                     return Promise.resolve("Book with ID 1 exists")
