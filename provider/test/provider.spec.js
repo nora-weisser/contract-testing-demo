@@ -10,6 +10,11 @@ describe("Pact Verification", () => {
             providerBaseUrl: "http://localhost:3000",
             pactBrokerToken: process.env.PACT_BROKER_TOKEN,
             providerVersion: process.env.GITHUB_SHA,
+            providerVersionBranch: process.env.GITHUB_BRANCH,
+            consumerVersionSelectors: [
+                {mainBranch: true},
+                {matchingBranch: true},
+            ],
             publishVerificationResult: true,
             providerVersion: "1.0.0",
             stateHandlers: {
