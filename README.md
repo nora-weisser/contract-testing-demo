@@ -1,40 +1,69 @@
-# Contract Testing Demo - Library App
+# Contract Testing Demo – Library App
 
-This project demonstrates contract testing using Pact.js with a simple library API provider and consumer client.
+Consumer-driven contract testing with [Pact](https://docs.pact.io/), from a local test run all the way to a `can-i-deploy` gate in CI.
 
-## Overview
+Two small services share a contract: a **consumer** (`LibraryClient`) that reads books from an API, and a **provider** (an Express.js API) that serves them. The consumer writes down what it expects; the provider proves it delivers exactly that. A breaking change on either side fails the build before it reaches an environment where both run together.
 
-Contract testing is a technique that helps ensure that services (such as an API provider and its consumers) can communicate with each other effectively. This project includes:
+## How it works
 
-## Microservices under test
+```
+consumer test ──► pact file ──► Pact Broker ──► provider verification ──► can-i-deploy
+ (expectations)   (pacts/)      (PactFlow)       (real provider API)       (release gate)
+```
 
-1. **Consumer**: The consumer is a service or application that uses the API provided by the provider. In our demo, it's represented by the `LibraryClient` in the `consumer` directory. The consumer defines its expectations of how the provider's API should behave.
+1. **Consumer test** (`consumer/test/consumer.test.js`) runs `LibraryClient` against a Pact mock server and records the interactions it relies on:
+   - `GET /books` — a request for all books
+   - `GET /books/1` — a request for one book
+2. **Pact file** — if the consumer test passes, the contract is written to `pacts/LibraryConsumer-LibraryProvider.json`.
+3. **Publish** — in CI, the contract is published to a Pact Broker (PactFlow), tagged with the commit SHA and branch.
+4. **Provider verification** (`provider/test/provider.spec.js`) replays every interaction against the real Express API and checks the responses match.
+5. **can-i-deploy** — the broker confirms each side is compatible with the version of the other before it's released.
 
-2. **Provider**: The provider is the service that offers the API. In our demo, it's the Express.js server in the `provider` directory. The provider implements the API that the consumer uses and must meet the expectations set by the consumer.
+## Project structure
 
-## Technologies Used
+```
+consumer/
+  src/client.js            LibraryClient: getBook, getAllBooks, addBook
+  test/consumer.test.js    consumer expectations → pact file
+provider/
+  src/server.js            Express API: GET /books, GET /books/:id, POST /books
+  test/provider.spec.js    verifies the provider against the pact
+pacts/                     generated contracts
+.github/workflows/         CI pipeline: test, publish, verify, can-i-deploy
+```
 
-- Node.js
-- Express.js (for the provider API)
-- Pact.js (for contract testing)
-- Jest (for running tests)
+## Run it locally
 
-## Setup
+Requires Node.js 18+.
 
-1. Ensure you have Node.js installed (version 14 or higher recommended).
+```bash
+git clone https://github.com/nora-weisser/contract-testing-demo.git
+cd contract-testing-demo
+npm install
 
-2. Clone this repository:
-   ```
-   git clone git@github.com:nora-weisser/contract-testing-demo.git
-   cd contract-testing-demo
-   ```
+npm run test:consumer   # writes the contract to pacts/
+npm run test:provider   # verifies the provider against it
+```
 
-3. Install dependencies for both provider and consumer:
-   ```
-   npm install
-   ```
+## CI pipeline
 
-## Running Tests
+[`.github/workflows/contract-test-sample.yml`](.github/workflows/contract-test-sample.yml) runs on every push:
 
-- To run consumer tests: `npm run test:consumer`. If the test passes, a contract is generated and saved in the `pacts` folder. If it fails, the contract cannot be created.
-- To run provider tests then: `npm run test:provider`
+| Step | Command |
+| --- | --- |
+| Consumer contract tests | `npm run test:consumer` |
+| Publish contract to the broker | `npm run publish:pact` |
+| Provider verification | `npm run test:provider` |
+| Release gate for each side | `npm run can:i:deploy:consumer`, `npm run can:i:deploy:provider` |
+
+To run it in your own fork, add two repository secrets: `PACT_BROKER_BASE_URL` and `PACT_BROKER_TOKEN` (a free [PactFlow](https://pactflow.io/) account works).
+
+## Tech stack
+
+Node.js · Express.js · Pact JS · Jest · Pact Broker (PactFlow) · GitHub Actions
+
+## Read more
+
+- [Consumer-Driven Contract Testing in Practice](https://noraweisser.com/2025/01/31/consumer-driven-contract-testing-in-practice/) — the walkthrough behind this repo
+- [Automating Contract Testing in a CI/CD Pipeline with GitHub Actions](https://noraweisser.com/2025/02/04/automating-contract-testing-in-a-ci-cd-pipeline-with-github-actions/) — the pipeline, step by step
+- [awesome-contract-testing](https://github.com/nora-weisser/awesome-contract-testing) — curated resources on contract testing
